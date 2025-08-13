@@ -1,0 +1,33 @@
+name: FastAPI Docker Build and Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build the Docker image
+        run: docker build -t fastapi-app .
+
+      - name: Run the Docker container
+        run: docker run -d --name my-fastapi-container -p 8181:8181 fastapi-app
+
+      - name: Wait for the server to be ready
+        run: sleep 5
+
+      - name: Run Pytest against the running service
+        run: pytest
+
+      - name: Cleanup - Stop and remove the container
+        if: always()
+        run: |
+          docker stop my-fastapi-container
+          docker rm my-fastapi-container

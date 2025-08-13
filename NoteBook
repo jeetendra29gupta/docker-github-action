@@ -1,0 +1,19 @@
+pip install -r requirements.txt
+
+uvicorn main:app --host 0.0.0.0 --port 8181 --reload
+
+sudo docker build -t fastapi-app .
+
+sudo docker image ls | grep fastapi-app
+
+sudo docker run -d --name my-fastapi-container -p 8181:8181 fastapi-app
+
+
+
+
+
+docker stop $(docker ps -aq) && \
+docker rm $(docker ps -aq) && \
+docker rmi -f $(docker images -q) && \
+docker volume rm $(docker volume ls -q) && \
+docker network rm $(docker network ls | grep -v "bridge\|host\|none" | awk 'NR>1 {print $1}')

@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+
+pytest-asyncio
+pytest-mock
+
+pytest
+httpx
+
+black
+flake8
